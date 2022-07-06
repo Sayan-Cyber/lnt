@@ -198,7 +198,7 @@ canvas1 = Canvas( root, width = 1920,height = 1080,bd=0,highlightthickness=0, ba
   
 canvas1.pack(fill=BOTH,expand=TRUE)
   
-
+canvas1.create_image( 0, 0, image =bgimg,anchor = "nw")
 
 # _____________PARAMETER SUBMENUS_________________________________________________________
 
