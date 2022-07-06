@@ -189,7 +189,7 @@ root.state('zoomed')
 root.geometry('1400x800+100+100')
 root.minsize(1260,720)
 root.configure(bg=w)
-bgimg= PhotoImage(file='Additional_File\\bg.png')
+bgimg= PhotoImage(file='Additional_File\\rca.png')
 
 dash= PhotoImage(file='Additional_File\\icons\dashb.png')
 photo3= dash.subsample(1,1)
@@ -209,9 +209,9 @@ def clicked():
          root.counter=0
     
   
-Label(root,text="Earthing & Lightning Calculations",width=200,bg='#6F00C7',font=('Readex Pro Medium',18),borderwidth=0,compound=LEFT).place(relx=.5,y=25,anchor=CENTER)
+Label(root,text="Earthing & Lightning Calculations",width=200,bg='#6F00C7',font=('Readex Pro Medium',18),borderwidth=0,compound=LEFT,fg="white").place(relx=.5,y=25,anchor=CENTER)
 
-Button(root,text='Dashboard',image=photo3,compound=LEFT,width=196,height=45,bg='#6F00C7',borderwidth=0,font=('Readex Pro Medium',18),command=clicked,activebackground='#23D2FF').place(x=0,y=0)
+Button(root,text='Dashboard',image=photo3,compound=LEFT,width=196,height=45,bg='#6F00C7',borderwidth=0,font=('Readex Pro Medium',18),fg='white',command=clicked,activebackground='#23D2FF').place(x=0,y=0)
   
 TEMP= Frame(root)
 
@@ -406,11 +406,17 @@ photoimage1= exit.subsample(2,2)
 savee= PhotoImage(file='Additional_File\icons\save.png')
 photoimage2= savee.subsample(2,2)
 
+pdf= PhotoImage(file='Additional_File\icons\pdf.png')
+photoimage101= pdf.subsample(2,2)
+exl= PhotoImage(file='Additional_File\icons\\xl.png')
+photoimage102= exl.subsample(2,2)
+
 Button(root,fg="#000000",text='Exit',font=('Josefin Sans',10),image=photoimage1,compound=RIGHT,bg='#ffffff', command=root.destroy,borderwidth=0,cursor='hand2').place(x=1850,rely=.1,anchor=CENTER)
 
+'''buttons for exporting excel and pdf'''
 
-Button(frame4,text="Export Excel",fg="#000000",font=('Josefin Sans',10, font.BOLD),image=photoimage2,compound=RIGHT,cursor='hand2',bg=w, command=savexl,borderwidth=0).place(relx=0.2,rely=1.01,anchor=CENTER)
-Button(frame4,text="Export PDF",fg="#000000",font=('Josefin Sans',10, font.BOLD),image=photoimage2,compound=RIGHT,cursor='hand2',bg="#6F00C7", command=pdf,borderwidth=0).place(relx=0.6,rely=1.01,anchor=CENTER)
+Button(frame4,text="Export Excel",fg="#000000",font=('Josefin Sans',10, font.BOLD),image=photoimage102,compound=RIGHT,cursor='hand2',bg=w, command=savexl,borderwidth=0).place(relx=0.2,rely=1.05,anchor=CENTER)
+Button(frame4,text="Export PDF",fg="#000000",font=('Josefin Sans',10, font.BOLD),image=photoimage101,compound=RIGHT,cursor='hand2',bg="white", command=pdf,borderwidth=0).place(relx=0.6,rely=1.05,anchor=CENTER)
 
 image1= PhotoImage(file='Additional_File\We.png')
 image1.subsample(1,1)
