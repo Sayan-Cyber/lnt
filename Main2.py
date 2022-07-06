@@ -28,7 +28,7 @@ counter=0
 w='#ffffff'
 b='#000000'
 lbf='Readex Pro Medium',12
-
+pi= 3.141592653589793238
 
 import openpyxl
 
@@ -71,8 +71,8 @@ def calculations ():                                                            
     amp = float(i.get())
     teev = float(tee.get())
     neev  = nee.get() 
-    legsv= legs.get()
-    asrv= asr.get()
+    legsv= float(legs.get())
+    asrv= float(asr.get())
     mat= matr.get()
 
     doclist=[dname,doca,docb,docc,docd ]
@@ -96,10 +96,38 @@ def calculations ():                                                            
         q=0.000138
    
     s= 1000*((amp*1)/k)
+
       
     teevf= (s+(s*teev/100))
     os.chdir(sys.path[0])
-   
+    
+    '''for rpl'''
+    
+    rpl= (math.sqrt(pi/.72))*asrv/4
+    
+    ''' for rpi'''
+    log_element= math.log(2*300/4)
+    roh_element=100*asrv
+    pi_element=2*pi*300
+    rpi =(roh_element/pi_element)*log_element
+    
+    '''for re'''
+
+    re=(rpl*rpi)/(rpl+rpi)
+    
+    ''' FOR Rearth'''
+    r_earth= re/neev
+    
+    ''' for Rs'''
+    log_element_t= math.log(4*legsv/tesv)
+    roh_element_t=100*asrv
+    pi_element_t=2*pi*300
+    rpi =(roh_element_t/pi_element_t)*log_element_t
+    
+    r_s= 
+    
+    '''variable input in excel'''
+    sheet['V11'] = asrv
     sheet['V22'] = amp
     sheet['V12'] = mat
     sheet['V19'] = neev
@@ -118,6 +146,10 @@ def calculations ():                                                            
     
     sheet['V41'] =teev
     sheet['V42'] =teevf
+    sheet['V51'] = rpl
+    sheet['V56'] = rpi
+    sheet['V62'] = re
+    
     
     if teevf<= 75:
         strip="25x3"
@@ -211,7 +243,7 @@ def clicked():
   
 Label(root,text="Earthing & Lightning Calculations",width=200,bg='#6F00C7',font=('Readex Pro Medium',18),borderwidth=0,compound=LEFT,fg="white").place(relx=.5,y=25,anchor=CENTER)
 
-Button(root,text='Dashboard',image=photo3,compound=LEFT,width=196,height=45,bg='#6F00C7',borderwidth=0,font=('Readex Pro Medium',18),fg='white',command=clicked,activebackground='#23D2FF').place(x=0,y=0)
+Button(root,text='Dashboard',image=photo3,compound=LEFT,width=196,height=30,bg='#6F00C7',borderwidth=0,font=('Readex Pro Medium',18),fg='white',command=clicked,activebackground='#23D2FF').place(x=0,y=8)
   
 TEMP= Frame(root)
 
@@ -253,6 +285,18 @@ place= PhotoImage(file='Additional_File\icons\place.png')
 photo13= place.subsample(2,2)
 star= PhotoImage(file='Additional_File\icons\star.png')
 photo99= star.subsample(2,2)
+
+
+
+cur= PhotoImage(file='Additional_File\icons\current.png')
+photo2022= cur.subsample(2,2)
+
+res= PhotoImage(file='Additional_File\icons\\res.png')
+photo2023= res.subsample(1,1)
+length= PhotoImage(file='Additional_File\icons\len.png')
+photo2024= length.subsample(1,1)
+num= PhotoImage(file='Additional_File\icons\\123.png')
+photo2025= num.subsample(1,1)
 
 
 idateicon= Image.open('Additional_File\\icons\idate.png')
@@ -304,17 +348,17 @@ doc_name.grid(row=4, column=1,pady=5,padx=1,sticky=W)
   
   
 Label(frame4,text='Inputs', font=('Readex Pro Medium',20), fg='#247881' ,bg=w, image=photo15,compound=LEFT).grid(row=0,column=0,sticky=W)
-lb2=Label(frame4,text='Max. Fault Current:', font=('Readex Pro Medium',14), fg='#6F00C7' ,bg=w, image=photo99,compound=LEFT)
+lb2=Label(frame4,text='Max. Fault Current:', font=('Readex Pro Medium',14), fg='#6F00C7' ,bg=w, image=photo2022,compound=LEFT)
 lb2.grid(row=1,column=0,padx=10, sticky=W)
 lb4=Label(frame4,text='Earth Strip Material :', font=('Readex Pro Medium',14), fg=	'#6F00C7',bg=w , image=photo99,compound=LEFT)
 lb4.grid(row=2,column=0,pady=5,padx=10, sticky=W)
 lb5=Label(frame4,text='Allowances in Cross Sectional Area:', font=('Readex Pro Medium',14), fg=	'#6F00C7',bg=w , image=photo99,compound=LEFT)
 lb5.grid(row=3,column=0,pady=5,padx=10, sticky=W)
-lb6=Label(frame4,text='No. of Earth Electrodes:', font=('Readex Pro Medium',14), fg='#6F00C7',bg=w , image=photo99,compound=LEFT)
-lb6.grid(row=1,column=2,pady=5,padx=25, sticky=W)
-lb7=Label(frame4,text='Length of Earth Grid strip:', font=('Readex Pro Medium',14), fg='#6F00C7',bg=w , image=photo99,compound=LEFT)
+lb6=Label(frame4,text='No. of Earth Electrodes:', font=('Readex Pro Medium',14), fg='#6F00C7',bg=w , image=photo2025,compound=LEFT)
+lb6.grid(row=1,column=2,pady=5,padx=5, sticky=W)
+lb7=Label(frame4,text='Length of Earth Grid strip:', font=('Readex Pro Medium',14), fg='#6F00C7',bg=w , image=photo2023,compound=LEFT)
 lb7.grid(row=2,column=2,pady=5,padx=25, sticky=W)
-lb8=Label(frame4,text='Average Soil resistivity :', font=('Readex Pro Medium',14), fg='#6F00C7',bg=w , image=photo99,compound=LEFT)
+lb8=Label(frame4,text='Average Soil resistivity :', font=('Readex Pro Medium',14), fg='#6F00C7',bg=w , image=photo2024,compound=LEFT)
 lb8.grid(row=3,column=2,pady=5,padx=25, sticky=W)
 
 
@@ -411,12 +455,12 @@ photoimage101= pdf.subsample(2,2)
 exl= PhotoImage(file='Additional_File\icons\\xl.png')
 photoimage102= exl.subsample(2,2)
 
-Button(root,fg="#000000",text='Exit',font=('Josefin Sans',10),image=photoimage1,compound=RIGHT,bg='#ffffff', command=root.destroy,borderwidth=0,cursor='hand2').place(x=1850,rely=.1,anchor=CENTER)
+#Button(root,fg="#000000",text='Exit',font=('Josefin Sans',10),image=photoimage1,compound=RIGHT,bg='#ffffff', command=root.destroy,borderwidth=0,cursor='hand2').place(x=1850,rely=.1,anchor=CENTER)
 
 '''buttons for exporting excel and pdf'''
 
-Button(frame4,text="Export Excel",fg="#000000",font=('Josefin Sans',10, font.BOLD),image=photoimage102,compound=RIGHT,cursor='hand2',bg=w, command=savexl,borderwidth=0).place(relx=0.2,rely=1.05,anchor=CENTER)
-Button(frame4,text="Export PDF",fg="#000000",font=('Josefin Sans',10, font.BOLD),image=photoimage101,compound=RIGHT,cursor='hand2',bg="white", command=pdf,borderwidth=0).place(relx=0.6,rely=1.05,anchor=CENTER)
+Button(frame4,text="Export Excel  ",fg="#000000",font=('Josefin Sans',10, font.BOLD),image=photoimage102,compound=RIGHT,cursor='hand2',bg=w, command=savexl,borderwidth=0).place(relx=0.2,rely=1.1,anchor=CENTER)
+Button(frame4,text="Export PDF  ",fg="#000000",font=('Josefin Sans',10, font.BOLD),image=photoimage101,compound=RIGHT,cursor='hand2',bg="white", command=pdf,borderwidth=0).place(relx=0.8,rely=1.1,anchor=CENTER)
 
 image1= PhotoImage(file='Additional_File\We.png')
 image1.subsample(1,1)
