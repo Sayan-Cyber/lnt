@@ -70,9 +70,10 @@ def calculations ():                                                            
       
     amp = float(i.get())
     teev = float(tee.get())
-    neev  = nee.get() 
+    neev  =float(nee.get()) 
     legsv= float(legs.get())
     asrv= float(asr.get())
+    tesv= float(thkn.get())
     mat= matr.get()
 
     doclist=[dname,doca,docb,docc,docd ]
@@ -119,12 +120,17 @@ def calculations ():                                                            
     r_earth= re/neev
     
     ''' for Rs'''
-    log_element_t= math.log(4*legsv/tesv)
+    log_element_t= math.log(4*legsv*100/tesv)
     roh_element_t=100*asrv
-    pi_element_t=2*pi*300
-    rpi =(roh_element_t/pi_element_t)*log_element_t
+    pi_element_t=2*pi*legsv*100
+    rs =(roh_element_t/pi_element_t)*log_element_t
     
-    r_s= 
+    '''for rg'''
+    rg= (r_earth*rs)/(r_earth+rs)
+    
+    ''' for i_density'''
+    
+    i_density= (7.57*1000)/(math.sqrt(asrv*1))
     
     '''variable input in excel'''
     sheet['V11'] = asrv
@@ -149,6 +155,10 @@ def calculations ():                                                            
     sheet['V51'] = rpl
     sheet['V56'] = rpi
     sheet['V62'] = re
+    sheet['V67'] = r_earth
+    sheet['V74'] = rs
+    sheet['V79'] = rg
+    sheet['V90'] = i_density
     
     
     if teevf<= 75:
@@ -318,7 +328,7 @@ lb8.grid(row=3,column=2,pady=5,padx=25, sticky=W)
 
 
 
-wtp_name = Entry(frame2,width=20,borderwidth=.5, relief=FLAT,highlightcolor='#6F00C7',highlightthickness=1)
+wtp_name = Entry(frame2,width=20,borderwidth=.5, relief=SUNKEN,highlightcolor='#6F00C7',highlightthickness=1)
 wtp_name.grid(row=1,column=1,pady=5,padx=1)
 t_name = Entry(frame2,width=20,borderwidth=.5, relief=SUNKEN,highlightcolor='#6F00C7',highlightthickness=1)
 t_name.grid(row=2,column=1, pady=5,padx=1)
@@ -343,17 +353,18 @@ doc_name.grid(row=4, column=1,pady=5,padx=1,sticky=W)
   
   
   
-  
+frame5= Frame(frame4, bg=w)
+frame5.place(x=370,y=175)
   
   
   
 Label(frame4,text='Inputs', font=('Readex Pro Medium',20), fg='#247881' ,bg=w, image=photo15,compound=LEFT).grid(row=0,column=0,sticky=W)
 lb2=Label(frame4,text='Max. Fault Current:', font=('Readex Pro Medium',14), fg='#6F00C7' ,bg=w, image=photo2022,compound=LEFT)
 lb2.grid(row=1,column=0,padx=10, sticky=W)
-lb4=Label(frame4,text='Earth Strip Material :', font=('Readex Pro Medium',14), fg=	'#6F00C7',bg=w , image=photo99,compound=LEFT)
-lb4.grid(row=2,column=0,pady=5,padx=10, sticky=W)
+lb4=Label(frame4,text='Earth Strip Material & Thickness:', font=('Readex Pro Medium',14), fg=	'#6F00C7',bg=w , image=photo99,compound=LEFT)
+lb4.grid(row=3,column=0,pady=5,padx=10, sticky=W)
 lb5=Label(frame4,text='Allowances in Cross Sectional Area:', font=('Readex Pro Medium',14), fg=	'#6F00C7',bg=w , image=photo99,compound=LEFT)
-lb5.grid(row=3,column=0,pady=5,padx=10, sticky=W)
+lb5.grid(row=2,column=0,pady=5,padx=10, sticky=W)
 lb6=Label(frame4,text='No. of Earth Electrodes:', font=('Readex Pro Medium',14), fg='#6F00C7',bg=w , image=photo2025,compound=LEFT)
 lb6.grid(row=1,column=2,pady=5,padx=5, sticky=W)
 lb7=Label(frame4,text='Length of Earth Grid strip:', font=('Readex Pro Medium',14), fg='#6F00C7',bg=w , image=photo2023,compound=LEFT)
@@ -371,10 +382,13 @@ lb8.grid(row=3,column=2,pady=5,padx=25, sticky=W)
 i = Entry(frame4,width=20,borderwidth=.5, relief=SUNKEN,highlightcolor='#00FFC6',highlightthickness=1)
 i.grid(row=1,column=1,pady=5,padx=1)
 mat= StringVar()
-matr= Combobox(frame4,textvariable=mat,width=20)
-matr.grid(row=2,column=1, pady=5,padx=1)
+matr= Combobox(frame5,textvariable=mat,width=6)
+matr.grid(row=0,column=1, pady=5,padx=1)
+thk= StringVar()
+thkn= Combobox(frame5,textvariable=thk,width=6)
+thkn.grid(row=0,column=2, pady=5,padx=1)
 tee= Entry(frame4,width=20,borderwidth=.5, relief=SUNKEN,highlightcolor='#00FFC6',highlightthickness=1)
-tee.grid(row=3,column=1, pady=5,padx=1)
+tee.grid(row=2,column=1, pady=5,padx=1)
 nee= Entry(frame4,width=20,borderwidth=.5, relief=SUNKEN,highlightcolor='#00FFC6',highlightthickness=1)
 nee.grid(row=1,column=3, pady=5,padx=1)
 legs= Entry(frame4,width=20,borderwidth=.5, relief=SUNKEN,highlightcolor='#00FFC6',highlightthickness=1)
