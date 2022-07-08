@@ -19,7 +19,7 @@ from tkinter.filedialog import asksaveasfilename
 import pyglet
 from PIL import Image, ImageTk
 import openpyxl
-from win32com import client
+import win32com.client
 
 '''Necessary fonts has been added using pyglet module'''
 pyglet.font.add_file('Additional_File\JosefinSans-Bold.ttf')
@@ -30,9 +30,9 @@ w = '#ffffff'
 b = '#000000'
 lbf = 'Readex Pro Medium', 12
 pi = 3.141592653589793238
-homepath = os.path.expanduser(os.getenv('USERPROFILE'))
-path= homepath+"\\temp"
-final_path="'{}'".format(path)
+homepath =os.environ['USERPROFILE']
+input_path= homepath+"\AppData\Roaming\\temp.xlsx"
+final_path=homepath+"\AppData\Roaming\\temp"
 xl = openpyxl.load_workbook("test1.xlsx")
 
 
@@ -167,7 +167,7 @@ def calculations():  # function for the save button in the main sheet___________
 
     sheet['V45'] = strip
 
-    sheet.title = "EP-xxxx-PS"
+    sheet.title = "Sheet1"
 
 
 def savexl():
@@ -199,13 +199,15 @@ def pdf():
         'Processing', 'Please Wait, Your Document is getting ready')
     calculations()
     
-    xl.save(final_path)
-    excel = client.Dispatch("Excel.Application")
-
-    sheets = excel.Workbooks.Open(final_path,'*.xlsx')
-    work_sheets = sheets.Worksheets[1]
+    xl.save(input_path)
+    excel = win32com.client.Dispatch("Excel.Application")
+    excel.Visible = False
+    sheets = excel.Workbooks.Open(input_path)
+    work_sheets=[1]
+    excel.WorkSheets(work_sheets).Select()
     res = messagebox.askquestion(
         "Save File", "Are you Sure you want to export this file?")
+    
     if res == 'yes':
         files = [('PDF Document(.pdf)', '*.pdf')]
         file = asksaveasfilename(filetypes=files, defaultextension=files)
@@ -213,15 +215,13 @@ def pdf():
 
             messagebox.showinfo('Error', 'Your File was not Saved :(')
         else:
-            work_sheets.ExportAsFixedFormat(0, file)
+            excel.ActiveSheet.ExportAsFixedFormat(0, file)
             messagebox.showinfo(
                 "Save", "Your Calculations was exported successfully!")
     else:
         messagebox.showinfo('Error', 'Your Document was not saved')
-    # except:
-    #     messagebox.showinfo('Error','Something Wrong With the file! ')
-    # xl.close()
-
+    excel.Close()
+    excel.Quit()
 
 root = Tk()
 root.title('Earthing Calculation')
