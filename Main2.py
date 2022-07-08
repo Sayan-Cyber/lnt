@@ -1,13 +1,12 @@
-# NECESSARY MODULES____________________________________________________________________________________________________________________________
+"""PEP 8 is not followed strictly due to security reasons"""#-------------------------------------------------------------------------------------------------#
+
 
 '''These are the necessary modules needed to properly run this. Here Tkinter is not imported 
 as '*' because that is a bad practice. Here only necessary modules from tkinter has been imported '''
-
-"""PEP 8 is not followed strictly due to security reasons"""
-
-import webbrowser
-from tkinter.ttk import Combobox
-import sys
+#--------------------------------------------------------------------------------------------------
+import webbrowser                                                                               
+from tkinter.ttk import Combobox                                                                |
+import sys                                                                                     
 import os
 import math
 import webbrowser
@@ -21,9 +20,14 @@ from PIL import Image, ImageTk
 import openpyxl
 import win32com.client
 
+#--------------------------------------------------------------------------------------------------
 '''Necessary fonts has been added using pyglet module'''
+
 pyglet.font.add_file('Additional_File\JosefinSans-Bold.ttf')
 pyglet.font.add_file('Additional_File\ReadexPro-Medium.ttf')
+
+#-------------------------------------------------------------------------------------------------
+''' Necessary declarations'''
 
 counter = 0
 w = '#ffffff'
@@ -35,8 +39,12 @@ input_path= homepath+"\AppData\Roaming\\temp.xlsx"
 final_path=homepath+"\AppData\Roaming\\temp"
 xl = openpyxl.load_workbook("test1.xlsx")
 
+#-------------------------------------------------------------------------------------------------
 
-def calculations():  # function for the save button in the main sheet___________________________________________________________
+''' function for calculationg various tasks inside the excel file, formulas are taken from 
+IS:3043,1987'''
+
+def calculations(): 
     wname = wtp_name.get()
     dname = doc_name.get()
     sname = c_name.get()
@@ -44,7 +52,7 @@ def calculations():  # function for the save button in the main sheet___________
     date = dat_e.get()
     dby = p_by.get()
     cby = c_by.get()
-    doca = docu_name_a.get()
+    doca = docu_name_a.get()        '''THESE ARE VARIABLES GETTING INPUTS FROM VARIOUS ENTRY AND COMBOBOXES'''
     docb = docu_name_b.get()
     docc = docu_name_c.get()
     docd = docu_name_d.get()
@@ -52,7 +60,7 @@ def calculations():  # function for the save button in the main sheet___________
     docf = docu_name_f.get()
     docg = docu_name_g.get()
     doch = docu_name_h.get()
-
+#-------------------------------------------------------------------------------------------------
     os.chdir(sys.path[0])
 
     sheet = xl['EP-NAVADA PS']
@@ -62,7 +70,7 @@ def calculations():  # function for the save button in the main sheet___________
     sheet['V8'] = dby
     sheet['AF6'] = date
     sheet['AH8'] = sname
-
+#-------------------------------------------------------------------------------------------------
     amp = float(i.get())
     teev = float(tee.get())
     neev = float(nee.get())
@@ -75,6 +83,7 @@ def calculations():  # function for the save button in the main sheet___________
     docstring = "-".join(doclist)
     docstring2 = [docstring, doce, docf, docg, doch]
     docstringf = "".join(docstring2)
+#-------------------------------------------------------------------------------------------------
     if mat == "AL":
         k = 126
         b = 228
@@ -92,7 +101,6 @@ def calculations():  # function for the save button in the main sheet___________
         q = 0.000138
 
     s = 1000*((amp*1)/k)
-
     teevf = (s+(s*teev/100))
     os.chdir(sys.path[0])
 
@@ -125,7 +133,7 @@ def calculations():  # function for the save button in the main sheet___________
     ''' for i_density'''
 
     i_density = (7.57*1000)/(math.sqrt(asrv*1))
-
+#-------------------------------------------------------------------------------------------------
     '''variable input in excel'''
     sheet['V11'] = asrv
     sheet['V22'] = amp
@@ -150,24 +158,30 @@ def calculations():  # function for the save button in the main sheet___________
     sheet['V74'] = rs
     sheet['V79'] = rg
     sheet['V90'] = i_density
+#-------------------------------------------------------------------------------------------------
+    try:
 
-    if teevf <= 75:
-        strip = "25x3"
-    elif teevf <= 300 and teevf > 75:
-        strip = "50x6"
-    elif teevf <= 500 and teevf > 300:
-        strip = "50x10"
-    elif teevf <= 650 and teevf > 500:
-        strip = "65x10"
-    elif teevf <= 750 and teevf > 650:
-        strip = "75x10"
+        if teevf <= 75:
+            strip = "25x3"
+        elif teevf <= 300 and teevf > 75:
+            strip = "50x6"
+        elif teevf <= 500 and teevf > 300:
+            strip = "50x10"
+        elif teevf <= 650 and teevf > 500:
+            strip = "65x10"
+        elif teevf <= 750 and teevf > 650:
+            strip = "75x10"
 
-    else:
-        messagebox.showerror("Error", "Please Check Your Calculations Again")
+        else:
+            messagebox.showerror("Error", "Please Check Your Calculations Again")
 
-    sheet['V45'] = strip
+        sheet['V45'] = strip
+    except:
+        messagebox.showinfo('Error', 'Oops! Something Wrong from Our Side. Please Report the issue :(')
 
     sheet.title = "Sheet1"
+
+#-------------------------------------------------------------------------------------------------
 
 
 def savexl():
@@ -190,38 +204,44 @@ def savexl():
         messagebox.showinfo('Error', 'Your Document was not saved')
     xl.close()
 
+#-------------------------------------------------------------------------------------------------
+
 
 def pdf():
 
-    # try:
-    # Open Microsoft Excel
-    messagebox.showinfo(
-        'Processing', 'Please Wait, Your Document is getting ready')
-    calculations()
-    
-    xl.save(input_path)
-    excel = win32com.client.Dispatch("Excel.Application")
-    excel.Visible = False
-    sheets = excel.Workbooks.Open(input_path)
-    work_sheets=[1]
-    excel.WorkSheets(work_sheets).Select()
-    res = messagebox.askquestion(
-        "Save File", "Are you Sure you want to export this file?")
-    
-    if res == 'yes':
-        files = [('PDF Document(.pdf)', '*.pdf')]
-        file = asksaveasfilename(filetypes=files, defaultextension=files)
-        if file == '':
+    try:
+        messagebox.showinfo(
+            'Processing', 'Please Wait, Your Document is getting ready')
+        calculations()
+        
+        xl.save(input_path)
+        excel = win32com.client.Dispatch("Excel.Application")
+        excel.Visible = False
+        sheets = excel.Workbooks.Open(input_path)
+        work_sheets=[1]
+        excel.WorkSheets(work_sheets).Select()
+        res = messagebox.askquestion(
+            "Save File", "Are you Sure you want to export this file?")
+        
+        if res == 'yes':
+            files = [('PDF Document(.pdf)', '*.pdf')]
+            file = asksaveasfilename(filetypes=files, defaultextension=files)
+            if file == '':
 
-            messagebox.showinfo('Error', 'Your File was not Saved :(')
+                messagebox.showinfo('Error', 'Your File was not Saved :(')
+            else:
+                excel.ActiveSheet.ExportAsFixedFormat(0, file)
+                messagebox.showinfo(
+                    "Save", "Your Calculations was exported successfully!")
         else:
-            excel.ActiveSheet.ExportAsFixedFormat(0, file)
-            messagebox.showinfo(
-                "Save", "Your Calculations was exported successfully!")
-    else:
-        messagebox.showinfo('Error', 'Your Document was not saved')
-    excel.Close()
-    excel.Quit()
+            messagebox.showinfo('Error', 'Your Document was not saved')
+    except :
+        messagebox.showinfo('Error', 'Oops! Something Wrong from Our Side. Please Report the issue :(')
+    finally:
+        xl.Close()
+        excel.Quit()
+
+#-------------------------------------------------------------------------------------------------
 
 root = Tk()
 root.title('Earthing Calculation')
@@ -241,7 +261,7 @@ canvas1.pack(fill=BOTH, expand=TRUE)
 
 canvas1.create_image(0, 0, image=bgimg, anchor="nw")
 
-# _____________PARAMETER SUBMENUS_________________________________________________________
+#-------------------------------------------------------------------------------------------------
 
 
 def clicked():
@@ -249,6 +269,8 @@ def clicked():
     if root.counter == 3:
         webbrowser.open(url='https://bit.ly/3dAlL5T')
         root.counter = 0
+
+#-------------------------------------------------------------------------------------------------
 
 
 Label(root, text="Earthing & Lightning Calculations", width=200, bg='#6F00C7', font=(
@@ -271,6 +293,7 @@ frame4 = Frame(root, bg="WHITE", borderwidth=0,
 
 frame4.place(relx=0.5, rely=0.75, anchor=CENTER)
 
+#-------------------------------------------------------------------------------------------------
 
 msheet = PhotoImage(file='Additional_File\icons\sheet.png')
 photo15 = msheet.subsample(2, 2)
@@ -299,20 +322,20 @@ photo13 = place.subsample(2, 2)
 star = PhotoImage(file='Additional_File\icons\star.png')
 photo99 = star.subsample(2, 2)
 
+#-------------------------------------------------------------------------------------------------
 
 cur = PhotoImage(file='Additional_File\icons\current.png')
 photo2022 = cur.subsample(2, 2)
-
 res = PhotoImage(file='Additional_File\icons\\res.png')
 photo2023 = res.subsample(1, 1)
 length = PhotoImage(file='Additional_File\icons\len.png')
 photo2024 = length.subsample(1, 1)
 num = PhotoImage(file='Additional_File\icons\\123.png')
 photo2025 = num.subsample(1, 1)
-
-
 idateicon = Image.open('Additional_File\\icons\idate.png')
 coverphoto4 = ImageTk.PhotoImage(idateicon)
+
+#-------------------------------------------------------------------------------------------------
 
 Label(frame2, text='General', font=('Readex Pro Medium', 20), fg='#247881',
       bg=w, image=photo15, compound=LEFT).grid(row=0, column=0, sticky=W)
@@ -359,7 +382,7 @@ doc_name = Entry(frame2, width=15, borderwidth=.5, relief=SUNKEN,
                  highlightcolor='#6F00C7', highlightthickness=1)
 doc_name.grid(row=4, column=1, pady=5, padx=1, sticky=W)
 
-
+#-------------------------------------------------------------------------------------------------
 frame5 = Frame(frame4, bg=w)
 frame5.place(x=370, y=175)
 
@@ -420,7 +443,7 @@ l5.grid(row=4, column=0, sticky=W, padx=10)
 
 frame1 = Frame(frame2, bg=w)
 frame1.place(x=270, y=197)
-
+#-------------------------------------------------------------------------------------------------
 
 docu_name_a = StringVar()
 docuname_a = Combobox(frame1, width=4, textvariable=docu_name_a)
@@ -457,7 +480,7 @@ docu_name_h = StringVar()
 docuname_h = Combobox(frame1, width=1, textvariable=docu_name_h)
 docuname_h['values'] = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
 docuname_h.grid(row=1, column=12, pady=5, padx=1)
-
+#-------------------------------------------------------------------------------------------------
 Label(frame1, text="-", font=('Readex Pro Medium', 18),
       fg='#0E185F', bg=w).grid(row=1, column=0)
 Label(frame1, text="-", font=('Readex Pro Medium', 18),
@@ -479,7 +502,7 @@ photoimage101 = pdf1.subsample(2, 2)
 exl = PhotoImage(file='Additional_File\icons\\xl.png')
 photoimage102 = exl.subsample(2, 2)
 
-# Button(root,fg="#000000",text='Exit',font=('Josefin Sans',10),image=photoimage1,compound=RIGHT,bg='#ffffff', command=root.destroy,borderwidth=0,cursor='hand2').place(x=1850,rely=.1,anchor=CENTER)
+#-------------------------------------------------------------------------------------------------
 
 '''buttons for exporting excel and pdf'''
 
@@ -487,7 +510,7 @@ Button(frame4, text="Export Excel  ", fg="#000000", font=('Josefin Sans', 10, fo
        compound=RIGHT, cursor='hand2', bg=w, command=savexl, borderwidth=0).place(relx=0.2, rely=1.1, anchor=CENTER)
 Button(frame4, text="Export PDF  ", fg="#000000", font=('Josefin Sans', 10, font.BOLD), image=photoimage101,
        compound=RIGHT, cursor='hand2', bg="white", command=pdf, borderwidth=0).place(relx=0.8, rely=1.1, anchor=CENTER)
-
+#-------------------------------------------------------------------------------------------------
 image1 = PhotoImage(file='Additional_File\Wew.png')
 image1.subsample(1, 1)
 
